@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Implementation-Vendor: Drew Noakes
+Implementation-Title: metadata-extractor
+Implementation-Version: 2.9.1
+Built-By: Drew
+Build-Jdk: 1.7.0_79
+Class-Path: xmpcore-5.1.2.jar
+Created-By: Apache Maven 3.0.5
+Archiver-Version: Plexus Archiver
+
