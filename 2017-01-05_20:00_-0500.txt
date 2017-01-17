@@ -1,6 +1,0 @@
-
-this is the version 1 of project of GetMetadata.
-
-when you run it, a dialog will appear to let you choose one or more picture, after you click ok the program will run and the produce a timestamp-based excel file (.xlsx) to record the some important information of your photo, such as file name, file size, resolution of the picture and GPS if the picture has record the location information. In addition, all the operation record and data will writen into a txt file, making it possible to look back.
-
-
