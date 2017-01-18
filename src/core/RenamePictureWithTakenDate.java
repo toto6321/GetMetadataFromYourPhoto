@@ -7,8 +7,14 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
+/**
+ * this class is mainly for deal with photos taken by iPhone, as well as those
+ * with the same or similar format.
+ * 
+ * @author sweettoto
+ *
+ */
 public class RenamePictureWithTakenDate extends GetPhotoMetadata {
-
 	public RenamePictureWithTakenDate() {
 
 	}
@@ -31,7 +37,6 @@ public class RenamePictureWithTakenDate extends GetPhotoMetadata {
 		int second = Integer.parseInt(dateInString.substring(17));
 		calendar.set(year, month, dayOfMonth, hourOfDay, minute, second);
 		System.out.println(year + "\t" + month + "\t" + dayOfMonth + "\t" + hourOfDay + "\t" + minute + "\t" + second);
-		;
 		return calendar.getTime();
 	}
 
@@ -58,25 +63,32 @@ public class RenamePictureWithTakenDate extends GetPhotoMetadata {
 		System.out.println(original.getAbsolutePath());
 
 		String dateLable = null;
-		String dateStringRead = getDateOrTimeInString(getInputFiles().get(0));
+		// String dateStringRead = getDateOrTimeInString(fileName);
 		// String temp="2016-10-17T20:24:24";
-		System.out.println(dateStringRead);
+		// System.out.println(dateStringRead);
 
 		// format the date to comprise new name
-		dateLable = formatDateToString(parseStringToDate(dateStringRead));
+		dateLable = formatDateToString(getDateOrTime(fileName));
 
 		// to rename the file keeping it on the original directory
 		String destinationPath = (String) original.getAbsolutePath().subSequence(0,
 				original.getAbsolutePath().lastIndexOf(File.separatorChar));
 		destinationPath += File.separatorChar + "IMG_" + dateLable;
 		destinationPath += original.getName().substring(original.getName().lastIndexOf('.'));
-		System.out.println(destinationPath);
+		System.out.println("TargetPath: " + destinationPath);
 		File dest = new File(destinationPath);
-		System.out.println(original.renameTo(dest));
+		System.out.println("Renaming result: " + original.renameTo(dest));
 
 		// show destination file after renaming
-		System.out.println(original.getName());
-		System.out.println(dest.getName());
+		System.out.println("Orig: " + original.getName());
+		System.out.println("Dest: " + dest.getName());
+	}
+
+	/**
+	 * to generate some logs for looking back
+	 */
+	public void log() {
+
 	}
 
 	public void renameAll() {
@@ -88,12 +100,11 @@ public class RenamePictureWithTakenDate extends GetPhotoMetadata {
 		}
 	}
 
-/*
 	public static void main(String[] args) {
 		RenamePictureWithTakenDate renaming = new RenamePictureWithTakenDate();
 		renaming.setInputFilesByDialog();
 		renaming.renameAll();
 
 	}
-*/
+
 }

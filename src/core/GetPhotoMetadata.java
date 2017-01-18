@@ -139,14 +139,15 @@ public class GetPhotoMetadata {
 		Calendar calendar = Calendar.getInstance();
 		// to extract data from the string to comprise a Date
 		int year = Integer.parseInt(dateInString.substring(0, 4));
-		int month = Integer.parseInt(dateInString.substring(5, 7));
+		// because monthOfYear is 0-based, so the real value should be minus by 1.
+		int monthOfYear = Integer.parseInt(dateInString.substring(5, 7))-1;
 		int dayOfMonth = Integer.parseInt(dateInString.substring(8, 10));
 		int hourOfDay = Integer.parseInt(dateInString.substring(11, 13));
 		int minute = Integer.parseInt(dateInString.substring(14, 16));
 		int second = Integer.parseInt(dateInString.substring(17));
-		calendar.set(year, month, dayOfMonth, hourOfDay, minute, second);
-		System.out.println(year + "\t" + month + "\t" + dayOfMonth + "\t" + hourOfDay + "\t" + minute + "\t" + second);
-		;
+		calendar.set(year, monthOfYear, dayOfMonth, hourOfDay, minute, second);
+		System.out.println(dateInString);
+		System.out.println(year + "\t" + (monthOfYear+1) + "\t" + dayOfMonth + "\t" + hourOfDay + "\t" + minute + "\t" + second);
 		return calendar.getTime();
 	}
 
@@ -179,11 +180,18 @@ public class GetPhotoMetadata {
 			result = getFileModifiedDateInString(fileName);
 		}
 		Date date = null;
-		// strings like "2016:10:17 20:24:24"
 		if (result.matches("(\\d){4}:(\\d){2}:(\\d){2} (\\d){2}:(\\d){2}:(\\d){2}")) {
+			// regualrExpression matches (^Date/Time Original$)|(^Date$) ,
+			// and"strings like "2016:10:17 20:24:24"
 			date = parseStringToDate2(result);
 		} else if (result.matches("(\\d){4}-(\\d){2}-(\\d){2}(.)(\\d){2}:(\\d){2}:(\\d){2}")) {
+			// regualrExpression matches (^Create Date$) ,
+			// and"strings like "2016-10-17T20:24:24"
 			date = parseStringToDate1(result);
+		} else if (result.matches("(\\w){3}(.)(\\w){3}(.)(\\d){1,2}(.)(\\d){2}(.)(\\d){2}(.)(\\d){2}(.){5,8}(\\d){4}")) {
+			// regualrExpression matches (.*File.*Modified.*Date.*) ,
+			// and"strings like "Fri Jan 13 23:24:14 -05:00 2017"
+			date = parseFileModifiedDateToCalendar(result).getTime();
 		}
 		return date;
 
@@ -222,13 +230,14 @@ public class GetPhotoMetadata {
 
 	/**
 	 * it is for calendarString like "Fri Jan 13 23:24:14 -05:00 2017"
+	 * 
 	 * @param calendarString
 	 * @return
 	 */
 	private Calendar parseFileModifiedDateToCalendar(String calendarString) {
 		Calendar calendar = Calendar.getInstance();
-		String pattern="EEE MMM dd HH:mm:ss XXX yyyy";
-		SimpleDateFormat format=new SimpleDateFormat(pattern);
+		String pattern = "EEE MMM dd HH:mm:ss XXX yyyy";
+		SimpleDateFormat format = new SimpleDateFormat(pattern);
 		try {
 			calendar.setTime(format.parse(calendarString));
 		} catch (ParseException e) {
@@ -243,8 +252,9 @@ public class GetPhotoMetadata {
 		RegularExpression regularExpression = new RegularExpression("(.*File.*Modified.*Date.*)");
 		String fileModifiedDateInString = readMeatadataFromPhoto(fileName, regularExpression);
 		// "EEE MMM dd HH:mm:ss ZZZZ yyyy"
-		if(fileModifiedDateInString.matches("^(\\w){3}(.)(\\w){3}(.)(\\d){2}(.)(\\d){2}:(\\d){2}:(\\d){2}(.){7}(\\d){4}$")){
-			calendar=parseFileModifiedDateToCalendar(fileModifiedDateInString);
+		if (fileModifiedDateInString
+				.matches("^(\\w){3}(.)(\\w){3}(.)(\\d){2}(.)(\\d){2}:(\\d){2}:(\\d){2}(.){7}(\\d){4}$")) {
+			calendar = parseFileModifiedDateToCalendar(fileModifiedDateInString);
 		}
 		return calendar;
 	}

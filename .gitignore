@@ -22,6 +22,8 @@ hs_err_pid*
 # hidden file
 .*.*
 
+# hidden directory
+.*	
 
 
 

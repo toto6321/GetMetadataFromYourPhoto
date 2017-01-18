@@ -30,13 +30,14 @@ public class TestRenamePictureWithTakenDate {
 	public void testGetPhotoMetadataClass(){
 		GetPhotoMetadata getPhotoMetadata=new GetPhotoMetadata();
 //		String inputFile="/Volumes/Toto/totosweet/Pictures/IMG_1028_ps2 copy.png";
-		String inputFile="/Volumes/Toto/totosweet/Pictures/IMG_0010.png";
+		String inputFile="/Volumes/Toto/totosweet/Pictures/IMG_.png";
 		ArrayList<String> aList=new ArrayList<String>();
 		aList.add(inputFile);
 		getPhotoMetadata.setInputFiles(aList);
-//		System.out.println(getPhotoMetadata.getDateOrTime(getPhotoMetadata.getInputFiles().get(0)).toString());
-		System.out.println(getPhotoMetadata.getFileModifiedDate(getPhotoMetadata.getInputFiles().get(0)));
+		System.out.println(getPhotoMetadata.getDateOrTime(getPhotoMetadata.getInputFiles().get(0)));
+//		System.out.println(getPhotoMetadata.getFileModifiedDate(getPhotoMetadata.getInputFiles().get(0)));
 //		System.out.println(getPhotoMetadata.getFileSize(getPhotoMetadata.getInputFiles().get(0)));
+		System.out.println("\n----");
 		getPhotoMetadata.printAllInformation();
 	}
 	
