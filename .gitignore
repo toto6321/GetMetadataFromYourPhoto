@@ -25,5 +25,9 @@ hs_err_pid*
 # hidden directory
 .*	
 
+# .gitignore
+.gitignore
 
+.project
+.classpath
 
